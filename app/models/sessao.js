@@ -14,14 +14,29 @@ module.exports = function(){
             type: Date,
             required: true
         },
-        codigo: {
-            type: String,
+        dicas: {
+            type: [String],
             required: true
+        },
+        palpite: {
+            type: [String],
+            required: true
+        },
+        correta: {
+            type: Number,
+            required: true
+        },
+        codigo: {
+            type: Number,
+            required: true,
+            index: {
+                unique: true
+            }
         },
         profid: {
             type: mongoose.Schema.ObjectId,
             ref: 'Professor'
-        }
+        },
     });
     return mongoose.model('Sessao', schema);
-}
+}();

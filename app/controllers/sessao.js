@@ -5,14 +5,18 @@ let Professor = require('../models/professor');
 let Sessao = require('../models/sessao');
 
 module.exports.criarSessao = function(req, res){
-    cod = Math.floor(Math.random() * (9999 - 1000 + 1) + 1000);
+    let cod = Math.floor(Math.random() * (99999 - 10000 + 1) + 10000);
+    let now = new Date()
     let payload = jwt.decode(req.query.token);
     let sessao = new Sessao({
         titulo: req.body.titulo,
         descricao: req.body.descricao,
-        data: req.body.data,
+        data: now,
+        dicas: req.body.dicas,
+        palpite: req.body.palpite,
+        correta: req.body.correta,
         codigo: cod,
-        profid: payload.userId
+        profid: payload.userId,
     });
     let promise = Sessao.create(sessao);
     promise.then(
