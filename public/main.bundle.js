@@ -154,7 +154,7 @@ var AppModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_5__angular_http__["b" /* HttpModule */],
                 __WEBPACK_IMPORTED_MODULE_7__app_routing__["a" /* routing */],
             ],
-            providers: [__WEBPACK_IMPORTED_MODULE_14__app_service__["a" /* AppService */], __WEBPACK_IMPORTED_MODULE_0__page_criar_secao_add_dicas_add_dicas_component__["a" /* AddDicasComponent */]],
+            providers: [__WEBPACK_IMPORTED_MODULE_14__app_service__["a" /* AppService */], __WEBPACK_IMPORTED_MODULE_0__page_criar_secao_add_dicas_add_dicas_component__["a" /* AddDicasComponent */], __WEBPACK_IMPORTED_MODULE_1__page_criar_secao_gerar_codigo_gerar_codigo_component__["a" /* GerarCodigoComponent */]],
             bootstrap: [__WEBPACK_IMPORTED_MODULE_8__app_component__["a" /* AppComponent */]]
         })
     ], AppModule);
@@ -205,7 +205,7 @@ var APP_ROUTES = [
                 ] }
         ] },
 ];
-var routing = __WEBPACK_IMPORTED_MODULE_4__angular_router__["b" /* RouterModule */].forRoot(APP_ROUTES);
+var routing = __WEBPACK_IMPORTED_MODULE_4__angular_router__["c" /* RouterModule */].forRoot(APP_ROUTES);
 
 
 /***/ }),
@@ -241,8 +241,6 @@ var AppService = /** @class */ (function () {
         this.urls = "http://localhost:3000/api/sessao";
         this.urlp = "http://localhost:3000/api/professores";
     }
-    // users: User[] = [];
-    // mostrarPageApresentacao = new EventEmitter <boolean>();
     AppService.prototype.getToken = function () {
         return localStorage.getItem("token");
     };
@@ -272,28 +270,41 @@ var AppService = /** @class */ (function () {
         }).map(function (response) {
             var r = response.json();
             _this.setToken(r.token);
-            _this.username = r.nome;
+            _this.router.navigate(['pagina-inicial/secoes']);
+            // this.username = r.nome;
             return r;
         });
     };
-    AppService.prototype.getNome = function () {
-        return this.username;
-    };
-    // getUsuarios(){
-    //   return this.http.get(this.urlp + "?token=" + this.getToken())
-    //     .map((response:Response)=> {
-    //       let user = response.json();
-    //       let nome = user.nome;
-    //       return
-    //     });
+    // getNome(){
+    //   return this.username;
     // }
     AppService.prototype.getUsuarios = function () {
         return this.http.get(this.urlp + "?token=" + this.getToken())
             .map(function (response) { return (response.json()); });
     };
+    AppService.prototype.criarSecao = function (titulo, descricao, dicas, palpite, correta) {
+        console.log(titulo, descricao, dicas, palpite, correta);
+        return this.http.post(this.urls + "?token=" + this.getToken(), {
+            titulo: titulo,
+            descricao: descricao,
+            dicas: dicas,
+            palpite: palpite,
+            correta: correta
+        }).map(function (response) { return (response.json()); });
+    };
+    AppService.prototype.getSecoes = function () {
+        console.log("chamou o get secoes");
+        return this.http.get(this.urls + "?token=" + this.getToken())
+            .map(function (response) { return (response.json()); });
+        // .map((response:Response) => {
+        //   let data = response.json();
+        //   console.log("data service: "+data);
+        //   return data;
+        // });
+    };
     AppService = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["A" /* Injectable */])(),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__angular_http__["a" /* Http */], __WEBPACK_IMPORTED_MODULE_4__angular_router__["a" /* Router */]])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__angular_http__["a" /* Http */], __WEBPACK_IMPORTED_MODULE_4__angular_router__["b" /* Router */]])
     ], AppService);
     return AppService;
 }());
@@ -403,10 +414,6 @@ var CadastrarComponent = /** @class */ (function () {
                 .subscribe(function (data) {
                 console.log(data);
             }, function (error) { return console.log(error); });
-            // this.nome = "";
-            // this.email = "";
-            // this.senha = "";
-            // this.cnfsenha = "";    
         }
     };
     CadastrarComponent = __decorate([
@@ -467,13 +474,11 @@ var EntrarComponent = /** @class */ (function () {
         this.servico.getUsuarios();
     };
     EntrarComponent.prototype.entrar = function (e) {
-        var _this = this;
         event.preventDefault();
         console.log("Entrou no TS");
         this.servico.login(this.emailLogin, this.senhaLogin)
             .subscribe(function (data) {
             console.log(data);
-            _this.router.navigate(['pagina-inicial/secoes']);
         }, function (error) { return console.log(error); });
     };
     EntrarComponent = __decorate([
@@ -482,7 +487,7 @@ var EntrarComponent = /** @class */ (function () {
             template: __webpack_require__("./src/app/form-inicial/entrar/entrar.component.html"),
             styles: [__webpack_require__("./src/app/form-inicial/entrar/entrar.component.css")]
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__app_service__["a" /* AppService */], __WEBPACK_IMPORTED_MODULE_2__angular_router__["a" /* Router */]])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__app_service__["a" /* AppService */], __WEBPACK_IMPORTED_MODULE_2__angular_router__["b" /* Router */]])
     ], EntrarComponent);
     return EntrarComponent;
 }());
@@ -611,7 +616,7 @@ module.exports = ".add-dicas{\r\n    color: white;\r\n    padding: 30px 0 0 40px
 /***/ "./src/app/page-criar-secao/add-dicas/add-dicas.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"add-dicas\">\r\n  <div class=\"row\">\r\n    <div class=\"col-sm-6\">\r\n        <div class=\"titulo\">\r\n          <h5><b>2º Adicione dicas as suas respectivas casas:</b></h5>\r\n        </div>\r\n      <div class=\"row row-dica dica1\">\r\n        <div class=\"col-sm dica\">\r\n            <div class=\"num-dica\">\r\n              <h4>01</h4>\r\n            </div>\r\n            <input type=\"text\" class=\"form-control input\">\r\n        </div>\r\n        <div class=\"col-sm dica\">\r\n           <div class=\"num-dica\">\r\n             <h4>08</h4>\r\n           </div>\r\n           <input type=\"text\" class=\"form-control input\">\r\n        </div>\r\n      </div>\r\n      <div class=\"row row-dica\">\r\n        <div class=\"col-sm dica\">\r\n            <div class=\"num-dica\">\r\n              <h4>02</h4>\r\n            </div>\r\n            <input type=\"text\" class=\"form-control input\">\r\n        </div>\r\n        <div class=\"col-sm dica\">\r\n            <div class=\"num-dica\">\r\n              <h4>10</h4>\r\n            </div>\r\n            <input type=\"text\" class=\"form-control input\">\r\n        </div>\r\n      </div>\r\n      <div class=\"row row-dica\">\r\n        <div class=\"col-sm dica\">\r\n            <div class=\"num-dica\">\r\n              <h4>04</h4>\r\n            </div>\r\n            <input type=\"text\" class=\"form-control input\">\r\n        </div>\r\n        <div class=\"col-sm dica\">\r\n            <div class=\"num-dica\">\r\n              <h4>11</h4>\r\n            </div>\r\n            <input type=\"text\" class=\"form-control input\">\r\n        </div>\r\n      </div>\r\n      <div class=\"row row-dica\">\r\n        <div class=\"col-sm dica\">\r\n            <div class=\"num-dica\">\r\n              <h4>05</h4>\r\n            </div>\r\n            <input type=\"text\" class=\"form-control input\">\r\n        </div>\r\n        <div class=\"col-sm dica\">\r\n            <div class=\"num-dica\">\r\n              <h4>13</h4>\r\n            </div>\r\n            <input type=\"text\" class=\"form-control input\">\r\n        </div>\r\n      </div>\r\n      <div class=\"row row-dica\">\r\n        <div class=\"col-sm dica\">\r\n            <div class=\"num-dica\">\r\n              <h4>07</h4>\r\n            </div>\r\n            <input type=\"text\" class=\"form-control input\">\r\n        </div>\r\n        <div class=\"col-sm dica\">\r\n            <div class=\"num-dica\">\r\n              <h4>14</h4>\r\n            </div>\r\n            <input type=\"text\" class=\"form-control input\">\r\n        </div>\r\n      </div>\r\n    </div>\r\n    <div class=\"col-sm-5\">\r\n      <p class=\"instrucao\">Adicione as dicas que serão mostradas no decorrer do jogo. As dicas deverão indicar ao aluno qual assunto está sendo abordado nesta seção.\r\n        </p>\r\n      <div class=\"tabueiro-dica\">\r\n        <div class=\"tabu\">\r\n            <div class=\"coluna-lateral\" >\r\n                <div class=\"casa cadeado\" (click)=\"clicou('Esta casa é fixa e não pode receber uma dica')\"><img src=\"../../../assets/images/lock.png\"></div>\r\n                <div class=\"casa\" (click)=\"clicou('Seja direto(a)')\">13</div>\r\n                <div class=\"casa casa-lateral\" (click)=\"clicou('Cuidado para não entregar o jogo')\">14</div>\r\n                <div class=\"casa casa-lateral cadeado\"(click)=\"clicou('Esta casa é fixa e não pode receber uma dica')\"><img src=\"../../../assets/images/lock.png\"></div>\r\n                <div class=\"casa casa-lateral inicio\"></div>\r\n              </div>\r\n              <div class=\"coluna-central\">\r\n                <div class=\"coluna-central__superior-inferior\" id=\"superior\">\r\n                  <div class=\"casa\" (click)=\"clicou('Utilize as casas finais para as dicas mais fáceis')\">11</div>\r\n                  <div class=\"casa\" (click)=\"clicou('Dê dicas que incentivem a discussão')\">10</div>\r\n                  <div class=\"casa cadeado\" (click)=\"clicou('Esta casa é fixa e não pode receber uma dica')\"><img src=\"../../../assets/images/lock.png\"></div>\r\n                </div>\r\n                <div class=\"coluna-central__central\">\r\n                  <p class=\"texto-dinamico\"><b>{{texto}}</b></p>\r\n                </div>\r\n                <div class=\"coluna-central__superior-inferior\">\r\n                  <div class=\"casa\" (click)=\"clicou('Ordene das dicas mais difíceis até as mais fáceis')\">01</div>\r\n                  <div class=\"casa\" (click)=\"clicou('Utilize as primeiras casas para as dicas mais difíceis')\">02</div>\r\n                  <div class=\"casa cadeado\" (click)=\"clicou('Esta casa é fixa e não pode receber uma dica')\"><img src=\"../../../assets/images/lock.png\"></div>\r\n                </div>\r\n        \r\n              </div>\r\n              <div class=\"coluna-lateral\">\r\n                  <div class=\"casa casa-lateral\" (click)=\"clicou('Dê dicas curtas')\">08</div>\r\n                  <div class=\"casa casa-lateral\" (click)=\"clicou('Cuidado para não tornar o jogo difícil demais')\" >07</div>\r\n                  <div class=\"casa casa-lateral cadeado\" (click)=\"clicou('Esta casa é fixa e não pode receber uma dica')\"><img src=\"../../../assets/images/lock.png\"></div>\r\n                  <div class=\"casa casa-lateral\" (click)=\"clicou('Não utilize fatos que seus alunos não tenham sido apresentados')\">05</div>\r\n                  <div class=\"casa\"(click)=\"clicou('Confunda seus alunos, faça-os ter que juntar as peças')\">04</div>\r\n              </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n\r\n  <div class=\"botoes\">\r\n    <div class=\"voltar\">\r\n      <app-botao  [routerLink] = \"['/pagina-inicial','criarsecao','addPergunta']\"> Voltar </app-botao>\r\n    </div>\r\n    <div >\r\n      <app-botao class=\"avancar\" [routerLink] = \"['/pagina-inicial','criarsecao','gerarcodigo']\"> Avançar </app-botao>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
+module.exports = "<div class=\"add-dicas\">\r\n  <div class=\"row\">\r\n    <div class=\"col-sm-6\">\r\n        <div class=\"titulo\">\r\n          <h5><b>2º Adicione dicas as suas respectivas casas:</b></h5>\r\n        </div>\r\n      <div class=\"row row-dica dica1\">\r\n        <div class=\"col-sm dica\">\r\n            <div class=\"num-dica\">\r\n              <h4>01</h4>\r\n            </div>\r\n            <input type=\"text\" class=\"form-control input\" [(ngModel)]=\"casa1\" name=\"casa1\" required #scasa1=\"ngModel\">\r\n        </div>\r\n        <div class=\"col-sm dica\">\r\n           <div class=\"num-dica\">\r\n             <h4>08</h4>\r\n           </div>\r\n           <input type=\"text\" class=\"form-control input\" [(ngModel)]=\"casa8\" name=\"casa8\" required #scasa8=\"ngModel\">\r\n        </div>\r\n      </div>\r\n      <div class=\"row row-dica\">\r\n        <div class=\"col-sm dica\">\r\n            <div class=\"num-dica\">\r\n              <h4>02</h4>\r\n            </div>\r\n            <input type=\"text\" class=\"form-control input\" [(ngModel)]=\"casa2\" name=\"casa2\" required #scasa2=\"ngModel\">\r\n        </div>\r\n        <div class=\"col-sm dica\">\r\n            <div class=\"num-dica\">\r\n              <h4>10</h4>\r\n            </div>\r\n            <input type=\"text\" class=\"form-control input\" [(ngModel)]=\"casa10\" name=\"casa10\" required #scasa10=\"ngModel\">\r\n        </div>\r\n      </div>\r\n      <div class=\"row row-dica\">\r\n        <div class=\"col-sm dica\">\r\n            <div class=\"num-dica\">\r\n              <h4>04</h4>\r\n            </div>\r\n            <input type=\"text\" class=\"form-control input\" [(ngModel)]=\"casa4\" name=\"casa4\" required #scasa4=\"ngModel\">\r\n        </div>\r\n        <div class=\"col-sm dica\">\r\n            <div class=\"num-dica\">\r\n              <h4>11</h4>\r\n            </div>\r\n            <input type=\"text\" class=\"form-control input\" [(ngModel)]=\"casa11\" name=\"casa11\" required #scasa11=\"ngModel\">\r\n        </div>\r\n      </div>\r\n      <div class=\"row row-dica\">\r\n        <div class=\"col-sm dica\">\r\n            <div class=\"num-dica\">\r\n              <h4>05</h4>\r\n            </div>\r\n            <input type=\"text\" class=\"form-control input\" [(ngModel)]=\"casa5\" name=\"casa5\" required #scasa5=\"ngModel\">\r\n        </div>\r\n        <div class=\"col-sm dica\">\r\n            <div class=\"num-dica\">\r\n              <h4>13</h4>\r\n            </div>\r\n            <input type=\"text\" class=\"form-control input\" [(ngModel)]=\"casa13\" name=\"casa13\" required #scasa13=\"ngModel\">\r\n        </div>\r\n      </div>\r\n      <div class=\"row row-dica\">\r\n        <div class=\"col-sm dica\">\r\n            <div class=\"num-dica\">\r\n              <h4>07</h4>\r\n            </div>\r\n            <input type=\"text\" class=\"form-control input\" [(ngModel)]=\"casa7\" name=\"casa7\" required #scasa7=\"ngModel\">\r\n        </div>\r\n        <div class=\"col-sm dica\">\r\n            <div class=\"num-dica\">\r\n              <h4>14</h4>\r\n            </div>\r\n            <input type=\"text\" class=\"form-control input\" [(ngModel)]=\"casa14\" name=\"casa14\" required #scasa14=\"ngModel\">\r\n        </div>\r\n      </div>\r\n    </div>\r\n    <div class=\"col-sm-5\">\r\n      <p class=\"instrucao\">Adicione as dicas que serão mostradas no decorrer do jogo. As dicas deverão indicar ao aluno qual assunto está sendo abordado nesta seção.\r\n        </p>\r\n      <div class=\"tabueiro-dica\">\r\n        <div class=\"tabu\">\r\n            <div class=\"coluna-lateral\" >\r\n                <div class=\"casa cadeado\" (click)=\"clicou('Esta casa é fixa e não pode receber uma dica')\"><img src=\"../../../assets/images/lock.png\"></div>\r\n                <div class=\"casa\" (click)=\"clicou('Seja direto(a)')\">13</div>\r\n                <div class=\"casa casa-lateral\" (click)=\"clicou('Cuidado para não entregar o jogo')\">14</div>\r\n                <div class=\"casa casa-lateral cadeado\"(click)=\"clicou('Esta casa é fixa e não pode receber uma dica')\"><img src=\"../../../assets/images/lock.png\"></div>\r\n                <div class=\"casa casa-lateral inicio\"></div>\r\n              </div>\r\n              <div class=\"coluna-central\">\r\n                <div class=\"coluna-central__superior-inferior\" id=\"superior\">\r\n                  <div class=\"casa\" (click)=\"clicou('Utilize as casas finais para as dicas mais fáceis')\">11</div>\r\n                  <div class=\"casa\" (click)=\"clicou('Dê dicas que incentivem a discussão')\">10</div>\r\n                  <div class=\"casa cadeado\" (click)=\"clicou('Esta casa é fixa e não pode receber uma dica')\"><img src=\"../../../assets/images/lock.png\"></div>\r\n                </div>\r\n                <div class=\"coluna-central__central\">\r\n                  <p class=\"texto-dinamico\"><b>{{texto}}</b></p>\r\n                </div>\r\n                <div class=\"coluna-central__superior-inferior\">\r\n                  <div class=\"casa\" (click)=\"clicou('Ordene das dicas mais difíceis até as mais fáceis')\">01</div>\r\n                  <div class=\"casa\" (click)=\"clicou('Utilize as primeiras casas para as dicas mais difíceis')\">02</div>\r\n                  <div class=\"casa cadeado\" (click)=\"clicou('Esta casa é fixa e não pode receber uma dica')\"><img src=\"../../../assets/images/lock.png\"></div>\r\n                </div>\r\n        \r\n              </div>\r\n              <div class=\"coluna-lateral\">\r\n                  <div class=\"casa casa-lateral\" (click)=\"clicou('Dê dicas curtas')\">08</div>\r\n                  <div class=\"casa casa-lateral\" (click)=\"clicou('Cuidado para não tornar o jogo difícil demais')\" >07</div>\r\n                  <div class=\"casa casa-lateral cadeado\" (click)=\"clicou('Esta casa é fixa e não pode receber uma dica')\"><img src=\"../../../assets/images/lock.png\"></div>\r\n                  <div class=\"casa casa-lateral\" (click)=\"clicou('Não utilize fatos que seus alunos não tenham sido apresentados')\">05</div>\r\n                  <div class=\"casa\"(click)=\"clicou('Confunda seus alunos, faça-os ter que juntar as peças')\">04</div>\r\n              </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n\r\n  <div class=\"botoes\">\r\n    <div class=\"voltar\">\r\n      <app-botao  [routerLink] = \"['/pagina-inicial','criarsecao','addPergunta']\"> Voltar </app-botao>\r\n    </div>\r\n    <div >\r\n      <app-botao class=\"avancar\" (click)=\"criarSecao3($event)\"> Avançar </app-botao>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -621,6 +626,7 @@ module.exports = "<div class=\"add-dicas\">\r\n  <div class=\"row\">\r\n    <div
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AddDicasComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("./node_modules/@angular/router/esm5/router.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -631,9 +637,21 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
+
 var AddDicasComponent = /** @class */ (function () {
-    function AddDicasComponent() {
+    function AddDicasComponent(activatedRoute, router) {
+        var _this = this;
+        this.activatedRoute = activatedRoute;
+        this.router = router;
+        this.dicas = [];
+        this.palpite = [];
         this.texto = "Utilize o conteúdo da aula como base nas dicas que cadastrar";
+        this.activatedRoute.queryParams.subscribe(function (params) {
+            _this.titulo = params['titulo'];
+            _this.descricao = params['descricao'];
+            _this.palpite = params['palpite'];
+            _this.opcao = params['opcao'];
+        });
     }
     AddDicasComponent.prototype.ngOnInit = function () {
     };
@@ -641,9 +659,19 @@ var AddDicasComponent = /** @class */ (function () {
         this.texto = texto;
         console.log(texto);
     };
-    AddDicasComponent.prototype.criarSecao2 = function (titulo, descricao, palpite, opcao) {
-        console.log("chegou aqui add");
-        console.log(titulo, descricao, palpite, opcao);
+    AddDicasComponent.prototype.criarSecao3 = function (e) {
+        event.preventDefault();
+        this.dicas.push(this.casa1);
+        this.dicas.push(this.casa2);
+        this.dicas.push(this.casa4);
+        this.dicas.push(this.casa5);
+        this.dicas.push(this.casa7);
+        this.dicas.push(this.casa8);
+        this.dicas.push(this.casa10);
+        this.dicas.push(this.casa11);
+        this.dicas.push(this.casa13);
+        this.dicas.push(this.casa14);
+        this.router.navigate(['/pagina-inicial', 'criarsecao', 'gerarcodigo'], { queryParams: { titulo: this.titulo, descricao: this.descricao, palpite: this.palpite, opcao: this.opcao, dicas: this.dicas } });
     };
     AddDicasComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
@@ -651,7 +679,7 @@ var AddDicasComponent = /** @class */ (function () {
             template: __webpack_require__("./src/app/page-criar-secao/add-dicas/add-dicas.component.html"),
             styles: [__webpack_require__("./src/app/page-criar-secao/add-dicas/add-dicas.component.css")]
         }),
-        __metadata("design:paramtypes", [])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */]])
     ], AddDicasComponent);
     return AddDicasComponent;
 }());
@@ -736,6 +764,7 @@ module.exports = "<div class=\"text-white add-pergunta\">\r\n    <div class= \"r
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CriarSecaoComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__add_dicas_add_dicas_component__ = __webpack_require__("./src/app/page-criar-secao/add-dicas/add-dicas.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_router__ = __webpack_require__("./node_modules/@angular/router/esm5/router.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -747,34 +776,21 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 
 
+
 // import { THROW_IF_NOT_FOUND } from '@angular/core/src/di/injector';
 var CriarSecaoComponent = /** @class */ (function () {
-    // @Output() enviarInfo = new EventEmitter<>();
-    function CriarSecaoComponent(addDicas) {
+    function CriarSecaoComponent(addDicas, router) {
         this.addDicas = addDicas;
+        this.router = router;
         this.palpite = [];
     }
     CriarSecaoComponent.prototype.criarSecao1 = function (e) {
         event.preventDefault();
-        console.log(e);
-        console.log(this.titulo);
-        console.log(this.descricao);
-        console.log(this.opcao);
-        // console.log(this.alternativa1);
-        // console.log(this.alternativa2);
-        // console.log(this.alternativa3);
-        // console.log(this.alternativa4);
         this.palpite.push(this.alternativa1);
         this.palpite.push(this.alternativa2);
         this.palpite.push(this.alternativa3);
         this.palpite.push(this.alternativa4);
-        // this.palpite[0] = this.alternativa1;
-        // this.palpite[1] = this.alternativa2;
-        // this.palpite[2] = this.alternativa3;
-        // this.palpite[3] = this.alternativa4;
-        console.log(this.palpite);
-        // this.enviarInfo.emit(this.titulo, this.descricao, this.palpite, this.opcao);
-        this.addDicas.criarSecao2(this.titulo, this.descricao, this.palpite, this.opcao);
+        this.router.navigate(['/pagina-inicial', 'criarsecao', 'addDicas'], { queryParams: { titulo: this.titulo, descricao: this.descricao, palpite: this.palpite, opcao: this.opcao } });
     };
     CriarSecaoComponent.prototype.ngOnInit = function () {
     };
@@ -784,7 +800,7 @@ var CriarSecaoComponent = /** @class */ (function () {
             template: __webpack_require__("./src/app/page-criar-secao/criar-secao/criar-secao.component.html"),
             styles: [__webpack_require__("./src/app/page-criar-secao/criar-secao/criar-secao.component.css")]
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__add_dicas_add_dicas_component__["a" /* AddDicasComponent */]])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__add_dicas_add_dicas_component__["a" /* AddDicasComponent */], __WEBPACK_IMPORTED_MODULE_2__angular_router__["b" /* Router */]])
     ], CriarSecaoComponent);
     return CriarSecaoComponent;
 }());
@@ -803,7 +819,7 @@ module.exports = "/* .bg{\r\n    background: linear-gradient(rgb(109, 189, 226),
 /***/ "./src/app/page-criar-secao/gerar-codigo/gerar-codigo.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\" text-white\">\r\n  <div class=\"row\">\r\n    <div class=\"col-sm-6 coluna1\">\r\n      <h5 class=\"margins\"><b> 3° Confirme as dias que cadastrou e gere o código </b></h5>\r\n      <p class=\"text marginl\">Confira as dicas cadastradas, verifique se elas estão corretas ou se \r\n        há algo que precise de correção. Se as dicas estiverem certas, sem necessidade de mais correções, \r\n        gere o código apertando no botão “Gerar”, no canto direito da tela. A partir do código gerado, que \r\n        será exibido na caixa em branco ao lado, será possível acessar no jogo a seção que você acabou de criar.        \r\n      </p>  \r\n      <h5 class=\"margins\"><b> 4° Pegue o código e distribua para os alunos </b></h5>\r\n      <p class=\"text\">Guarde este código para utilizar a seção criada. Ao abrir o aplicativo do Arcos, \r\n        o jogo pedirá um código, digite o código gerado para jogar com esta seção!\r\n      </p>  \r\n\r\n    </div>\r\n    <div class=\"col-sm-6 coluna2\">\r\n      <div class=\"codigo-container\">\r\n        <p class=\"codigo\"> VTX0987 </p>\r\n      </div>\r\n    </div>\r\n\r\n  </div>\r\n  <div class=\"botoes\">\r\n    <div class=\"voltar\">\r\n        <app-botao [routerLink] = \"['/pagina-inicial','criarsecao','addDicas']\"> Voltar </app-botao>\r\n    </div>\r\n    <div class=\"gerar\">\r\n        <app-botao> Gerar </app-botao>\r\n    </div>\r\n  </div>\r\n</div>"
+module.exports = "<div class=\" text-white\">\r\n  <div class=\"row\">\r\n    <div class=\"col-sm-6 coluna1\">\r\n      <h5 class=\"margins\"><b> 3° Confirme as dias que cadastrou e gere o código </b></h5>\r\n      <p class=\"text marginl\">Confira as dicas cadastradas, verifique se elas estão corretas ou se \r\n        há algo que precise de correção. Se as dicas estiverem certas, sem necessidade de mais correções, \r\n        gere o código apertando no botão “Gerar”, no canto direito da tela. A partir do código gerado, que \r\n        será exibido na caixa em branco ao lado, será possível acessar no jogo a seção que você acabou de criar.        \r\n      </p>  \r\n      <h5 class=\"margins\"><b> 4° Pegue o código e distribua para os alunos </b></h5>\r\n      <p class=\"text\">Guarde este código para utilizar a seção criada. Ao abrir o aplicativo do Arcos, \r\n        o jogo pedirá um código, digite o código gerado para jogar com esta seção!\r\n      </p>  \r\n\r\n    </div>\r\n    <div class=\"col-sm-6 coluna2\">\r\n      <div class=\"codigo-container\">\r\n        <p class=\"codigo\"> VTX0987 </p>\r\n      </div>\r\n    </div>\r\n\r\n  </div>\r\n  <div class=\"botoes\">\r\n    <div class=\"voltar\">\r\n        <app-botao > Voltar </app-botao>\r\n    </div>\r\n    <div class=\"gerar\">\r\n        <app-botao (click)=\"criarSecao6()\"> Gerar </app-botao>\r\n    </div>\r\n  </div>\r\n</div>"
 
 /***/ }),
 
@@ -812,7 +828,9 @@ module.exports = "<div class=\" text-white\">\r\n  <div class=\"row\">\r\n    <d
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return GerarCodigoComponent; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_router__ = __webpack_require__("./node_modules/@angular/router/esm5/router.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_service__ = __webpack_require__("./src/app/app.service.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -823,18 +841,40 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
+
+
 var GerarCodigoComponent = /** @class */ (function () {
-    function GerarCodigoComponent() {
+    function GerarCodigoComponent(activatedRoute, router, servico) {
+        var _this = this;
+        this.activatedRoute = activatedRoute;
+        this.router = router;
+        this.servico = servico;
+        this.palpite = [];
+        this.dicas = [];
+        this.activatedRoute.queryParams.subscribe(function (params) {
+            _this.titulo = params['titulo'];
+            _this.descricao = params['descricao'];
+            _this.palpite = params['palpite'];
+            _this.opcao = params['opcao'];
+            _this.dicas = params['dicas'];
+        });
     }
     GerarCodigoComponent.prototype.ngOnInit = function () {
     };
+    GerarCodigoComponent.prototype.criarSecao6 = function () {
+        console.log("chegou na putaria do gerar");
+        this.servico.criarSecao(this.titulo, this.descricao, this.dicas, this.palpite, this.opcao)
+            .subscribe(function (data) {
+            console.log(data);
+        }, function (error) { return console.log(error); });
+    };
     GerarCodigoComponent = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
+        Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["n" /* Component */])({
             selector: 'app-gerar-codigo',
             template: __webpack_require__("./src/app/page-criar-secao/gerar-codigo/gerar-codigo.component.html"),
             styles: [__webpack_require__("./src/app/page-criar-secao/gerar-codigo/gerar-codigo.component.css")]
         }),
-        __metadata("design:paramtypes", [])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0__angular_router__["a" /* ActivatedRoute */], __WEBPACK_IMPORTED_MODULE_0__angular_router__["b" /* Router */], __WEBPACK_IMPORTED_MODULE_2__app_service__["a" /* AppService */]])
     ], GerarCodigoComponent);
     return GerarCodigoComponent;
 }());
@@ -928,7 +968,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var HeaderComponent = /** @class */ (function () {
     function HeaderComponent(servico) {
         this.servico = servico;
-        this.usuario = this.servico.getNome();
+        // this.usuario = this.servico.getNome();
     }
     // userNome(){
     //   this.servico.getUsuarios();
@@ -969,7 +1009,8 @@ module.exports = "<nav class=\"navbar navbar-expand-lg\">\r\n  <div>\r\n    <ul 
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return NavbarComponent; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__app_service__ = __webpack_require__("./src/app/app.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -980,14 +1021,17 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
+
 var NavbarComponent = /** @class */ (function () {
-    function NavbarComponent() {
+    function NavbarComponent(servico) {
+        this.servico = servico;
         this.secaoAtivo = true;
         this.criarAtivo = false;
     }
     NavbarComponent.prototype.ativarSecao = function () {
         this.secaoAtivo = true;
         this.criarAtivo = false;
+        this.servico.getSecoes();
     };
     NavbarComponent.prototype.ativarCriar = function () {
         this.criarAtivo = true;
@@ -996,12 +1040,12 @@ var NavbarComponent = /** @class */ (function () {
     NavbarComponent.prototype.ngOnInit = function () {
     };
     NavbarComponent = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
+        Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["n" /* Component */])({
             selector: 'app-navbar',
             template: __webpack_require__("./src/app/page-inicial/navbar/navbar.component.html"),
             styles: [__webpack_require__("./src/app/page-inicial/navbar/navbar.component.css")]
         }),
-        __metadata("design:paramtypes", [])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0__app_service__["a" /* AppService */]])
     ], NavbarComponent);
     return NavbarComponent;
 }());
@@ -1070,7 +1114,7 @@ module.exports = ".bg{\r\n    background: -webkit-gradient(linear,left bottom, l
 /***/ "./src/app/secoes/cartao/cartao.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"\">\r\n    <div class=\"card bg text-white\">\r\n        <div class=\"card-body\">\r\n          <h5><b> {{ cartoes[index].titulo }} </b></h5>\r\n          <p> {{ cartoes[index].data }} </p>\r\n          <div class=\"line\"></div>\r\n          <p class=\"card-text\"> {{ cartoes[index].texto }} </p>\r\n        </div>\r\n      </div>\r\n</div>"
+module.exports = "<div class=\"\">\r\n    <div class=\"card bg text-white\">\r\n        <div class=\"card-body\">\r\n          <h5><b> {{ cartoes[index].titulo }} </b></h5>\r\n          <p> {{ cartoes[index].data }} </p>\r\n          <div class=\"line\"></div>\r\n          <p class=\"card-text\"> {{ cartoes[index].descricao }} </p>\r\n        </div>\r\n      </div>\r\n</div>"
 
 /***/ }),
 
@@ -1128,7 +1172,7 @@ module.exports = ".secoes{\r\n    margin: 30px 40px 0 100px;\r\n    width: 1190p
 /***/ "./src/app/secoes/secoes.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"secoes\">\r\n    <div class=\"row\">\r\n        <app-cartao [cartoes]=\"cartoes\" \r\n                    [index]=\"index\" \r\n                    *ngFor=\"let index = index; let cartao of cartoes\">\r\n        </app-cartao>\r\n    </div>\r\n</div>"
+module.exports = "<div class=\"secoes\">\r\n    <div class=\"row\">\r\n        <app-cartao [cartoes]=\"cartao\" \r\n                    [index]=\"index\" \r\n                    *ngFor=\"let index = index; let cartao of secoes\">\r\n        </app-cartao>\r\n    </div>\r\n</div>"
 
 /***/ }),
 
@@ -1137,7 +1181,8 @@ module.exports = "<div class=\"secoes\">\r\n    <div class=\"row\">\r\n        <
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SecoesComponent; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__app_service__ = __webpack_require__("./src/app/app.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1148,27 +1193,34 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
+
 var SecoesComponent = /** @class */ (function () {
-    function SecoesComponent() {
-        this.avancar = "Avançar";
+    function SecoesComponent(service) {
+        this.service = service;
+        this.secoes = [];
     }
     SecoesComponent.prototype.ngOnInit = function () {
+        //   this.data = this.service.getSecoes()
+        var _this = this;
+        //   this.secoes.push(new Cartao(this.data.titulo, this.data.data, this.data.decricao, this.data.palpite, this.data.correta, this.data.dicas, this.data.codigo))
+        //   console.log(this.secoes);
+        //   console.log("data: " +this.data)
+        // }
+        this.service.getSecoes()
+            .subscribe(function (data) {
+            _this.secoes = data;
+            console.log(_this.secoes);
+        }, function (error) {
+            console.log(error);
+        });
     };
-    __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["D" /* Input */])(),
-        __metadata("design:type", Object)
-    ], SecoesComponent.prototype, "index", void 0);
-    __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["D" /* Input */])(),
-        __metadata("design:type", Object)
-    ], SecoesComponent.prototype, "avancar", void 0);
     SecoesComponent = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
+        Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["n" /* Component */])({
             selector: 'app-secoes',
             template: __webpack_require__("./src/app/secoes/secoes.component.html"),
             styles: [__webpack_require__("./src/app/secoes/secoes.component.css")]
         }),
-        __metadata("design:paramtypes", [])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0__app_service__["a" /* AppService */]])
     ], SecoesComponent);
     return SecoesComponent;
 }());
