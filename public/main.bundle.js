@@ -241,6 +241,13 @@ var AppService = /** @class */ (function () {
         this.urls = "http://localhost:3000/api/sessao";
         this.urlp = "http://localhost:3000/api/professores";
     }
+    AppService.prototype.getProf = function () {
+        return localStorage.getItem("_id");
+    };
+    AppService.prototype.setProf = function (userId) {
+        localStorage.setItem("_id", userId);
+        console.log(userId);
+    };
     AppService.prototype.getToken = function () {
         return localStorage.getItem("token");
     };
@@ -270,6 +277,7 @@ var AppService = /** @class */ (function () {
         }).map(function (response) {
             var r = response.json();
             _this.setToken(r.token);
+            _this.setProf(r.userId);
             _this.router.navigate(['pagina-inicial/secoes']);
             // this.username = r.nome;
             return r;
@@ -294,8 +302,11 @@ var AppService = /** @class */ (function () {
     };
     AppService.prototype.getSecoes = function () {
         console.log("chamou o get secoes");
-        return this.http.get(this.urls + "?token=" + this.getToken())
-            .map(function (response) { return (response.json()); });
+        return this.http.get(this.urlp + "/" + this.getProf() + "/sessoes" + "?token=" + this.getToken())
+            .map(function (response) {
+            // (response.json())
+            return console.log(response.json());
+        });
         // .map((response:Response) => {
         //   let data = response.json();
         //   console.log("data service: "+data);
@@ -1208,6 +1219,7 @@ var SecoesComponent = /** @class */ (function () {
         // }
         this.service.getSecoes()
             .subscribe(function (data) {
+            console.log(data);
             _this.secoes = data;
             console.log(_this.secoes);
         }, function (error) {
