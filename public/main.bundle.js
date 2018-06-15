@@ -241,6 +241,13 @@ var AppService = /** @class */ (function () {
         this.urls = "http://localhost:3000/api/sessao";
         this.urlp = "http://localhost:3000/api/professores";
     }
+    AppService.prototype.getProf = function () {
+        return localStorage.getItem("_id");
+    };
+    AppService.prototype.setProf = function (userId) {
+        localStorage.setItem("_id", userId);
+        console.log(userId);
+    };
     AppService.prototype.getToken = function () {
         return localStorage.getItem("token");
     };
@@ -270,6 +277,7 @@ var AppService = /** @class */ (function () {
         }).map(function (response) {
             var r = response.json();
             _this.setToken(r.token);
+            _this.setProf(r.userId);
             _this.router.navigate(['pagina-inicial/secoes']);
             // this.username = r.nome;
             return r;
@@ -294,7 +302,7 @@ var AppService = /** @class */ (function () {
     };
     AppService.prototype.getSecoes = function () {
         console.log("chamou o get secoes");
-        return this.http.get(this.urls + "?token=" + this.getToken())
+        return this.http.get(this.urlp + "/" + this.getProf() + "/sessoes" + "?token=" + this.getToken())
             .map(function (response) { return (response.json()); });
         // .map((response:Response) => {
         //   let data = response.json();
@@ -1114,7 +1122,7 @@ module.exports = ".bg{\r\n    background: -webkit-gradient(linear,left bottom, l
 /***/ "./src/app/secoes/cartao/cartao.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"\">\r\n    <div class=\"card bg text-white\">\r\n        <div class=\"card-body\">\r\n          <h5><b> {{ cartoes[index].titulo }} </b></h5>\r\n          <p> {{ cartoes[index].data }} </p>\r\n          <div class=\"line\"></div>\r\n          <p class=\"card-text\"> {{ cartoes[index].descricao }} </p>\r\n        </div>\r\n      </div>\r\n</div>"
+module.exports = "<div class=\"\">\r\n    <div class=\"card bg text-white\">\r\n        <div class=\"card-body\">\r\n          <h5><b> {{ secoes.titulo }} </b></h5>\r\n          <p> {{ secoes.data }} </p>\r\n          <div class=\"line\"></div>\r\n          <p class=\"card-text\"> {{ secoes.descricao }} </p>\r\n        </div>\r\n      </div>\r\n</div>"
 
 /***/ }),
 
@@ -1123,7 +1131,8 @@ module.exports = "<div class=\"\">\r\n    <div class=\"card bg text-white\">\r\n
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CartaoComponent; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__app_service__ = __webpack_require__("./src/app/app.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1134,26 +1143,33 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
+
 var CartaoComponent = /** @class */ (function () {
-    function CartaoComponent() {
+    function CartaoComponent(service) {
+        this.service = service;
+        this.secoes = [];
     }
     CartaoComponent.prototype.ngOnInit = function () {
+        // this.secoes.push({titulo: "teste", descricao: "testando", data: "14/06/2018"});
+        // console.log(this.secoes);
+        console.log(this.secoes);
+        console.log(this.secoes.length);
     };
     __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["D" /* Input */])(),
-        __metadata("design:type", Array)
-    ], CartaoComponent.prototype, "cartoes", void 0);
+        Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["D" /* Input */])(),
+        __metadata("design:type", Object)
+    ], CartaoComponent.prototype, "secoes", void 0);
     __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["D" /* Input */])(),
+        Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["D" /* Input */])(),
         __metadata("design:type", Object)
     ], CartaoComponent.prototype, "index", void 0);
     CartaoComponent = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
+        Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["n" /* Component */])({
             selector: 'app-cartao',
             template: __webpack_require__("./src/app/secoes/cartao/cartao.component.html"),
             styles: [__webpack_require__("./src/app/secoes/cartao/cartao.component.css")]
         }),
-        __metadata("design:paramtypes", [])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0__app_service__["a" /* AppService */]])
     ], CartaoComponent);
     return CartaoComponent;
 }());
@@ -1172,7 +1188,7 @@ module.exports = ".secoes{\r\n    margin: 30px 40px 0 100px;\r\n    width: 1190p
 /***/ "./src/app/secoes/secoes.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"secoes\">\r\n    <div class=\"row\">\r\n        <app-cartao [cartoes]=\"cartao\" \r\n                    [index]=\"index\" \r\n                    *ngFor=\"let index = index; let cartao of secoes\">\r\n        </app-cartao>\r\n    </div>\r\n</div>"
+module.exports = "<div class=\"secoes\">\r\n    <div class=\"row\">\r\n        <app-cartao [secoes]=\"secao\" \r\n                    [index]=\"index\" \r\n                    *ngFor=\"let secao of secoes\">\r\n        </app-cartao>\r\n    </div>\r\n</div>"
 
 /***/ }),
 
@@ -1198,6 +1214,7 @@ var SecoesComponent = /** @class */ (function () {
     function SecoesComponent(service) {
         this.service = service;
         this.secoes = [];
+        this.index = this.index;
     }
     SecoesComponent.prototype.ngOnInit = function () {
         //   this.data = this.service.getSecoes()
@@ -1208,6 +1225,7 @@ var SecoesComponent = /** @class */ (function () {
         // }
         this.service.getSecoes()
             .subscribe(function (data) {
+            console.log(data);
             _this.secoes = data;
             console.log(_this.secoes);
         }, function (error) {

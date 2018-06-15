@@ -14,7 +14,7 @@ module.exports = function(){
     professorRouter(app);
     sessaoRouter(app);
     app.get('*', (req, res) => {
-        res.sendFile(path.join(_dirname, '../public/index.html'));
+        res.sendFile(path.join(__dirname, '../public/index.html'));
     })
     return app;
 }
