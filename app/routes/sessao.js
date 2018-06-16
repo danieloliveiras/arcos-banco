@@ -6,5 +6,5 @@ module.exports = function(app){
     app.post('/api/sessao', controller.criarSessao);
     app.put('/api/sessao', controller.modificarSessao);
     app.delete('/api/sessao/:id', controller.deletarSessao);
-    app.get('/api/sessao', controller.obterSessao);
+    app.get('/api/sessao/:id', controller.obterSessao);
 }
