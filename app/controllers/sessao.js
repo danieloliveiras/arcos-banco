@@ -92,3 +92,54 @@ module.exports.obterSessao = function(req, res){
         }
     )
 }
+
+module.exports.getDicas = function(req, res){
+    var id = req.params.id;
+    Sessao.findById(id).exec()
+    .then(
+        (sessao) => {
+            if (sessao){
+                res.json(sessao.dicas);
+            } else{
+                res.status(404).send("Sessão não encontrada");
+            }
+        },
+        (erro) => {
+            res.status(500).json(erro);
+        }
+    )
+}
+
+module.exports.getPalpite = function(req, res){
+    var id = req.params.id;
+    Sessao.findById(id).exec()
+    .then(
+        (sessao) => {
+            if (sessao){
+                res.json(sessao.palpite);
+            } else{
+                res.status(404).send("Sessão não encontrada");
+            }
+        },
+        (erro) => {
+            res.status(500).json(erro);
+        }
+    )
+}
+
+module.exports.getCorreta = function(req, res){
+    var id = req.params.id;
+    Sessao.findById(id).exec()
+    .then(
+        (sessao) => {
+            if (sessao){
+                res.json(sessao.correta);
+            } else{
+                res.status(404).send("Sessão não encontrada");
+            }
+        },
+        (erro) => {
+            res.status(500).json(erro);
+        }
+    )
+}
