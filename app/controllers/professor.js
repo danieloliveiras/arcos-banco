@@ -64,3 +64,17 @@ module.exports.sessoesDeProfessor = function(req, res){
         }
     )
 }
+
+module.exports.usuarioLogado = function(req, res){
+    let payload = jwt.decode(req.query.token);
+    let promise = Professor.findById(payload.userId);
+    promise.then(
+        function(professor){
+            res.json(professor);
+            console.log(professor)
+        },
+        function(erro){
+            res.status(500).send();
+        }
+    )
+}

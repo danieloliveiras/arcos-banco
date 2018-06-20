@@ -6,5 +6,6 @@ module.exports = function(app){
     app.post('/api/professores', controller.inserirProfessor);
     app.use('/api/professores', auth.checar);
     app.get('/api/professores', controller.listarProfessores);
+    app.get('/api/professores/logado', controller.usuarioLogado);
     app.get('/api/professores/:id/sessoes', controller.sessoesDeProfessor);
 }
