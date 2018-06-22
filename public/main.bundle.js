@@ -157,7 +157,7 @@ var AppModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_5__angular_http__["b" /* HttpModule */],
                 __WEBPACK_IMPORTED_MODULE_7__app_routing__["a" /* routing */],
             ],
-            providers: [__WEBPACK_IMPORTED_MODULE_14__app_service__["a" /* AppService */], __WEBPACK_IMPORTED_MODULE_0__page_criar_secao_add_dicas_add_dicas_component__["a" /* AddDicasComponent */], __WEBPACK_IMPORTED_MODULE_1__page_criar_secao_gerar_codigo_gerar_codigo_component__["a" /* GerarCodigoComponent */]],
+            providers: [__WEBPACK_IMPORTED_MODULE_14__app_service__["a" /* AppService */], __WEBPACK_IMPORTED_MODULE_0__page_criar_secao_add_dicas_add_dicas_component__["a" /* AddDicasComponent */], __WEBPACK_IMPORTED_MODULE_1__page_criar_secao_gerar_codigo_gerar_codigo_component__["a" /* GerarCodigoComponent */], __WEBPACK_IMPORTED_MODULE_10__page_inicial_navbar_navbar_component__["a" /* NavbarComponent */]],
             bootstrap: [__WEBPACK_IMPORTED_MODULE_8__app_component__["a" /* AppComponent */]]
         })
     ], AppModule);
@@ -409,9 +409,10 @@ module.exports = "<div>\r\n    <div >\r\n        <form class=\"form-cadastrar\" 
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CadastrarComponent; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__app_service__ = __webpack_require__("./src/app/app.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_router__ = __webpack_require__("./node_modules/@angular/router/esm5/router.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__form_inicial_component__ = __webpack_require__("./src/app/form-inicial/form-inicial.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_service__ = __webpack_require__("./src/app/app.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_core__ = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_router__ = __webpack_require__("./node_modules/@angular/router/esm5/router.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -424,10 +425,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var CadastrarComponent = /** @class */ (function () {
-    function CadastrarComponent(servico, router) {
+    function CadastrarComponent(servico, router, entrar) {
         this.servico = servico;
         this.router = router;
+        this.entrar = entrar;
         this.compatibilidade = false;
         this.sucesso = false;
     }
@@ -448,17 +451,18 @@ var CadastrarComponent = /** @class */ (function () {
                 _this.sucesso = true;
                 setTimeout(function () {
                     _this.router.navigate(['/pagina-apresentacao/entrar']);
+                    _this.entrar.ativarEntrar();
                 }, 4000);
             }, function (error) { return console.log(error); });
         }
     };
     CadastrarComponent = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["n" /* Component */])({
+        Object(__WEBPACK_IMPORTED_MODULE_2__angular_core__["n" /* Component */])({
             selector: 'app-cadastrar',
             template: __webpack_require__("./src/app/form-inicial/cadastrar/cadastrar.component.html"),
             styles: [__webpack_require__("./src/app/form-inicial/cadastrar/cadastrar.component.css")],
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0__app_service__["a" /* AppService */], __WEBPACK_IMPORTED_MODULE_2__angular_router__["b" /* Router */]])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__app_service__["a" /* AppService */], __WEBPACK_IMPORTED_MODULE_3__angular_router__["b" /* Router */], __WEBPACK_IMPORTED_MODULE_0__form_inicial_component__["a" /* FormInicialComponent */]])
     ], CadastrarComponent);
     return CadastrarComponent;
 }());
@@ -857,7 +861,7 @@ var CriarSecaoComponent = /** @class */ (function () {
 /***/ "./src/app/page-criar-secao/gerar-codigo/gerar-codigo.component.css":
 /***/ (function(module, exports) {
 
-module.exports = "/* .bg{\r\n    background: linear-gradient(rgb(109, 189, 226), rgb(68, 106, 173));\r\n    height: 70vh;\r\n    border-radius: 20px;\r\n    padding: 20px;\r\n    margin: 0 82px 0 82px;\r\n} */\r\n\r\n/* .instrucoes{\r\n    width: 30vw;\r\n    height: 60vh;\r\n    margin: 40px 40px 40px 60px;\r\n    float: left;\r\n    position: relative;\r\n} */\r\n\r\n/* .text{\r\n    font-size: 11pt;\r\n} */\r\n\r\n/* .marginl{\r\n    margin-bottom: 29px;\r\n} */\r\n\r\n/* .margins{\r\n    margin-bottom: 15px;\r\n} */\r\n\r\n/* .codigo-gerado{\r\n    width: 30vw;\r\n    height: 60vh;\r\n    margin: 25px;\r\n    float: right;\r\n    position: relative;\r\n} */\r\n\r\n.coluna1{\r\n    /* background-color: red; */\r\n    padding: 40px 0 0 60px;\r\n}\r\n\r\n.coluna2{\r\n    display: -webkit-box;\r\n    display: -ms-flexbox;\r\n    display: flex;\r\n    -webkit-box-pack: center;\r\n        -ms-flex-pack: center;\r\n            justify-content: center;\r\n    -webkit-box-align: center;\r\n        -ms-flex-align: center;\r\n            align-items: center;\r\n    margin-top: 5px;\r\n    /* background-color: red; */\r\n}\r\n\r\n.container{\r\n    /* margin: auto; */\r\n    margin-top: 160px;\r\n}\r\n\r\n.codigo-container{\r\n    width: 20vw;\r\n    height: 12vh;\r\n    background-color: white;\r\n    border: 2px solid #47C7DD;\r\n    border-radius: 15px;\r\n    margin: auto;\r\n    display: -webkit-box;\r\n    display: -ms-flexbox;\r\n    display: flex;\r\n    -webkit-box-pack: center;\r\n        -ms-flex-pack: center;\r\n            justify-content: center;\r\n    -webkit-box-align: center;\r\n        -ms-flex-align: center;\r\n            align-items: center;\r\n}\r\n\r\n.codigo{\r\n    font-size: 20pt;\r\n    /* text-align: center; */\r\n    color: black;\r\n    margin: 3vh;\r\n}\r\n\r\n/* .gerar{\r\n    position: absolute;\r\n    right: 0;\r\n    bottom: 0;\r\n}\r\n\r\n.voltar{\r\n    position: absolute;\r\n    left: 0;\r\n    bottom: 0;\r\n} */\r\n\r\n.botoes{\r\n    display: -webkit-box;\r\n    display: -ms-flexbox;\r\n    display: flex;\r\n    -webkit-box-pack: justify;\r\n        -ms-flex-pack: justify;\r\n            justify-content: space-between;\r\n    -webkit-box-align: center;\r\n        -ms-flex-align: center;\r\n            align-items: center;\r\n    margin-top: 30px;\r\n    margin-left: 40px;\r\n    height: 60px;\r\n    width: 1070px;\r\n    /* background-color: red; */\r\n}\r\n\r\n.comp{\r\n    display: none;\r\n}\r\n\r\n.sucess{\r\n    display: block;\r\n    color: white;\r\n}"
+module.exports = "/* .bg{\r\n    background: linear-gradient(rgb(109, 189, 226), rgb(68, 106, 173));\r\n    height: 70vh;\r\n    border-radius: 20px;\r\n    padding: 20px;\r\n    margin: 0 82px 0 82px;\r\n} */\r\n\r\n/* .instrucoes{\r\n    width: 30vw;\r\n    height: 60vh;\r\n    margin: 40px 40px 40px 60px;\r\n    float: left;\r\n    position: relative;\r\n} */\r\n\r\n/* .text{\r\n    font-size: 11pt;\r\n} */\r\n\r\n/* .marginl{\r\n    margin-bottom: 29px;\r\n} */\r\n\r\n/* .margins{\r\n    margin-bottom: 15px;\r\n} */\r\n\r\n/* .codigo-gerado{\r\n    width: 30vw;\r\n    height: 60vh;\r\n    margin: 25px;\r\n    float: right;\r\n    position: relative;\r\n} */\r\n\r\n.coluna1{\r\n    /* background-color: red; */\r\n    padding: 40px 0 0 60px;\r\n}\r\n\r\n.coluna2{\r\n    display: -webkit-box;\r\n    display: -ms-flexbox;\r\n    display: flex;\r\n    -webkit-box-pack: center;\r\n        -ms-flex-pack: center;\r\n            justify-content: center;\r\n    -webkit-box-align: center;\r\n        -ms-flex-align: center;\r\n            align-items: center;\r\n    margin-top: 5px;\r\n    /* background-color: red; */\r\n}\r\n\r\n.container{\r\n    /* margin: auto; */\r\n    margin-top: 160px;\r\n}\r\n\r\n.codigo-container{\r\n    width: 20vw;\r\n    height: 12vh;\r\n    background-color: white;\r\n    border: 2px solid #47C7DD;\r\n    border-radius: 15px;\r\n    margin: auto;\r\n    display: -webkit-box;\r\n    display: -ms-flexbox;\r\n    display: flex;\r\n    -webkit-box-pack: center;\r\n        -ms-flex-pack: center;\r\n            justify-content: center;\r\n    -webkit-box-align: center;\r\n        -ms-flex-align: center;\r\n            align-items: center;\r\n}\r\n\r\n.codigo{\r\n    font-size: 20pt;\r\n    /* text-align: center; */\r\n    color: black;\r\n    margin: 3vh;\r\n}\r\n\r\n/* .gerar{\r\n    position: absolute;\r\n    right: 0;\r\n    bottom: 0;\r\n}\r\n\r\n.voltar{\r\n    position: absolute;\r\n    left: 0;\r\n    bottom: 0;\r\n} */\r\n\r\n.botoes{\r\n    display: -webkit-box;\r\n    display: -ms-flexbox;\r\n    display: flex;\r\n    -webkit-box-pack: justify;\r\n        -ms-flex-pack: justify;\r\n            justify-content: space-between;\r\n    -webkit-box-align: center;\r\n        -ms-flex-align: center;\r\n            align-items: center;\r\n    margin-top: 30px;\r\n    margin-left: 40px;\r\n    height: 60px;\r\n    width: 1070px;\r\n    /* background-color: red; */\r\n}\r\n\r\n.comp{\r\n    color: transparent;\r\n    -webkit-user-select: none;\r\n       -moz-user-select: none;\r\n        -ms-user-select: none;\r\n            user-select: none;\r\n}\r\n\r\n.sucess{\r\n    /* display: block; */\r\n    color: white;\r\n}"
 
 /***/ }),
 
@@ -876,6 +880,7 @@ module.exports = "<div class=\" text-white\">\r\n  <div class=\"row\">\r\n    <d
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_router__ = __webpack_require__("./node_modules/@angular/router/esm5/router.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_service__ = __webpack_require__("./src/app/app.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__page_inicial_navbar_navbar_component__ = __webpack_require__("./src/app/page-inicial/navbar/navbar.component.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -888,12 +893,14 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var GerarCodigoComponent = /** @class */ (function () {
-    function GerarCodigoComponent(activatedRoute, router, servico) {
+    function GerarCodigoComponent(activatedRoute, router, servico, navbar) {
         var _this = this;
         this.activatedRoute = activatedRoute;
         this.router = router;
         this.servico = servico;
+        this.navbar = navbar;
         this.palpite = [];
         this.dicas = [];
         this.sucesso = false;
@@ -909,7 +916,6 @@ var GerarCodigoComponent = /** @class */ (function () {
     };
     GerarCodigoComponent.prototype.criarSecao6 = function () {
         var _this = this;
-        console.log("chegou na putaria do gerar");
         this.servico.criarSecao(this.titulo, this.descricao, this.dicas, this.palpite, this.opcao)
             .subscribe(function (data) {
             console.log(data);
@@ -917,6 +923,7 @@ var GerarCodigoComponent = /** @class */ (function () {
             _this.setCodigo(data);
             setTimeout(function () {
                 _this.router.navigate(['/pagina-inicial', 'secoes']);
+                _this.navbar.ativarSecao();
             }, 4000);
         }, function (error) { return console.log(error); });
     };
@@ -929,7 +936,7 @@ var GerarCodigoComponent = /** @class */ (function () {
             template: __webpack_require__("./src/app/page-criar-secao/gerar-codigo/gerar-codigo.component.html"),
             styles: [__webpack_require__("./src/app/page-criar-secao/gerar-codigo/gerar-codigo.component.css")]
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0__angular_router__["a" /* ActivatedRoute */], __WEBPACK_IMPORTED_MODULE_0__angular_router__["b" /* Router */], __WEBPACK_IMPORTED_MODULE_2__app_service__["a" /* AppService */]])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0__angular_router__["a" /* ActivatedRoute */], __WEBPACK_IMPORTED_MODULE_0__angular_router__["b" /* Router */], __WEBPACK_IMPORTED_MODULE_2__app_service__["a" /* AppService */], __WEBPACK_IMPORTED_MODULE_3__page_inicial_navbar_navbar_component__["a" /* NavbarComponent */]])
     ], GerarCodigoComponent);
     return GerarCodigoComponent;
 }());
@@ -1066,7 +1073,7 @@ module.exports = ".nav-item{\r\n    margin-left: 70px;\r\n    font-size: 17pt;\r
 /***/ "./src/app/page-inicial/navbar/navbar.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<nav class=\"navbar navbar-expand-lg\">\r\n  <div>\r\n    <ul class=\"navbar-nav\">\r\n      <li class=\"nav-item\">\r\n        <a class=\"nav-link\" (click)= \"ativarSecao()\" routerLink=\"secoes\"><b [ngClass]=\"{ativo: secaoAtivo}\"> Seções </b></a>\r\n      </li>\r\n      <li class=\"nav-item\">\r\n        <a class=\"nav-link\" href=\"#\" (click)= \"ativarCriar()\" routerLink=\"criarsecao/addPergunta\"><b [ngClass]=\"{ativo: criarAtivo}\"> Criar Seções </b></a>\r\n      </li>\r\n    </ul>\r\n  </div>\r\n</nav>"
+module.exports = "<nav class=\"navbar navbar-expand-lg\">\r\n  <div>\r\n    <ul class=\"navbar-nav\">\r\n      <li class=\"nav-item\">\r\n        <a class=\"nav-link\" (click)= \"ativarSecao()\" routerLink=\"secoes\"><b [ngClass]=\"{ativo: secaoAtivo}\"> Seções </b></a>\r\n      </li>\r\n      <li class=\"nav-item\">\r\n        <a class=\"nav-link\" (click)= \"ativarCriar()\" routerLink=\"criarsecao/addPergunta\"><b [ngClass]=\"{ativo: criarAtivo}\"> Criar Seções </b></a>\r\n      </li>\r\n    </ul>\r\n  </div>\r\n</nav>"
 
 /***/ }),
 
@@ -1123,7 +1130,7 @@ var NavbarComponent = /** @class */ (function () {
 /***/ "./src/app/page-inicial/page-inicial.component.css":
 /***/ (function(module, exports) {
 
-module.exports = ".page-inicial{\r\n    background-color: #F3F3F3;\r\n    height: 100vh;\r\n}"
+module.exports = ".page-inicial{\r\n    background-color: #F3F3F3;\r\n    height: auto;\r\n}"
 
 /***/ }),
 
@@ -1173,14 +1180,14 @@ var PageInicialComponent = /** @class */ (function () {
 /***/ "./src/app/secoes/cartao/cartao.component.css":
 /***/ (function(module, exports) {
 
-module.exports = ".bg{\r\n    background: -webkit-gradient(linear,left bottom, left top,from(#446CAA),to(#00A2C3));\r\n    background: linear-gradient(bottom,#446CAA,#00A2C3);\r\n}\r\n\r\n.card{\r\n    border: none;\r\n    border-radius: 9px;\r\n    width: 390px;\r\n    height: 220px;\r\n    margin: 0 10px 10px 0;\r\n}\r\n\r\np{\r\n    margin: 0;\r\n}\r\n\r\n/* h5{\r\n    margin-bottom: 2px;\r\n} */\r\n\r\n.line{\r\n    height: 2px;\r\n    width: 16rem;\r\n    background-color: rgb(155, 215, 243);\r\n    margin-top: 8px;\r\n    margin-bottom: 8px;\r\n}\r\n\r\n/* .card-text{\r\n    font-size: 11pt\r\n} */"
+module.exports = ".bg{\r\n    background: -webkit-gradient(linear,left bottom, left top,from(#446CAA),to(#00A2C3));\r\n    background: linear-gradient(bottom,#446CAA,#00A2C3);\r\n}\r\n\r\n.card{\r\n    border: none;\r\n    border-radius: 9px;\r\n    width: 300px;\r\n    height: 190px;\r\n    margin: 0 10px 10px 0;\r\n}\r\n\r\np{\r\n    margin: 0;\r\n}\r\n\r\n/* h5{\r\n    margin-bottom: 2px;\r\n} */\r\n\r\n.line{\r\n    height: 2px;\r\n    width: 16rem;\r\n    background-color: rgb(155, 215, 243);\r\n    margin-top: 8px;\r\n    margin-bottom: 8px;\r\n}\r\n\r\n/* .card-text{\r\n    font-size: 11pt\r\n} */"
 
 /***/ }),
 
 /***/ "./src/app/secoes/cartao/cartao.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"\">\r\n    <div class=\"card bg text-white\" (click)=\"detalhe(secoes)\">\r\n        <div class=\"card-body\">\r\n          <h5><b> {{ secoes.titulo }} [ {{ secoes.codigo }} ]</b></h5>\r\n          <p> {{ secoes.data }} </p>\r\n          <div class=\"line\"></div>\r\n          <p class=\"card-text\"> {{ secoes.descricao }} </p>\r\n        </div>\r\n      </div>\r\n</div>"
+module.exports = "<div class=\"\">\r\n    <div class=\"card bg text-white\" (click)=\"detalhe(secoes)\">\r\n        <div class=\"card-body\">\r\n          <h5><b> {{ secoes.titulo }} [ {{ secoes.codigo }} ]</b></h5>\r\n          <p> {{ secoes.data }} </p>\r\n          <div class=\"line\"></div>\r\n          <p class=\"card-text\"> {{ secoes.descricao }} </p>\r\n        </div>\r\n      </div>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -1323,7 +1330,7 @@ module.exports = ".secoes{\r\n    margin: 30px 40px 0 100px;\r\n    width: 1200p
 /***/ "./src/app/secoes/secoes.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"secoes\" >\r\n    <div class=\"row\">\r\n        <app-cartao [secoes]=\"secao\" \r\n                    [index]=\"index\" \r\n                    *ngFor=\"let secao of secoes\">\r\n        </app-cartao>\r\n    </div>\r\n    <div [ngClass]=\"{'vazia': vazio}\" class=\"comp text\"> <b>Ainda não há seções cadastradas!</b>  </div>\r\n</div>"
+module.exports = "<div class=\"secoes\" >\r\n    <div class=\"row\">\r\n        <app-cartao [secoes]=\"secao\" \r\n                    [index]=\"index\" \r\n                    *ngFor=\"let secao of secoes\">\r\n        </app-cartao>\r\n    </div>\r\n    <div [ngClass]=\"{'vazia': vazio}\" class=\"comp text\"> <b>Ainda não há seções cadastradas!</b>  </div>\r\n</div>\r\n\r\n"
 
 /***/ }),
 
